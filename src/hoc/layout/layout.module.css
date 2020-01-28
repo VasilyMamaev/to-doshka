@@ -1,0 +1,21 @@
+.Layout {
+  margin: 0 auto;
+  background-color: rosybrown;
+  border-radius: 10px;
+
+  height: 100vh;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.Layout h1 {
+  text-align: center;
+
+}
+
+.LayoutWrapper {
+  width: 98%;
+  margin: 0 auto;
+}
