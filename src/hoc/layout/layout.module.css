@@ -3,7 +3,7 @@
   background-color: rosybrown;
   border-radius: 10px;
 
-  height: 100vh;
+  height: 90vh;
   width: 60%;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
 
 }
 
-.LayoutWrapper {
+.LayoutTasks {
   width: 98%;
   margin: 0 auto;
 }

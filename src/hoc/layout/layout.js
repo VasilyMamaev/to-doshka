@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import classes from './layout.module.css'
 import Task from '../../components/task/task'
+import SortList from '../../components/sort-list/sort-list'
 
 export default class Layout extends Component {
 
   state = {
     tasks: [
-      {id: 0, title: 'должно выполниться', done: false},
-      {id: 1, title: 'выполнено', done: true},
-      {id: 2, title: 'должно выполниться', done: false},
+      {title: 'должно выполниться', done: false},
+      {title: 'выполнено', done: true},
+      {title: 'должно выполниться', done: false},
     ],
     formControls: {
-      newTask: ''
+      newTask: '',
+      viewTask: [true, false]
     }
   }
 
@@ -19,26 +21,27 @@ export default class Layout extends Component {
      if (this.state.formControls.newTask) {
       this.setState((prevState) => {
         let tasks = this.state.tasks
+        const formControls = this.state.formControls
         tasks.push({
-        id: prevState.tasks.length + 1,
         title: prevState.formControls.newTask,
-        done: false
+        done: false,
         })
+        formControls.newTask = ''
         return {
           tasks,
-          formControls : {newTask: ''}
+          formControls
         }
       })
     }
-    console.log(this.state)
   }
 
 
   onChangeInput = (evt) => {
     let value = evt.target.value
-    let newTask = value
+    const formControls = this.state.formControls
+    formControls.newTask = value
     this.setState({
-      formControls: {newTask}
+      formControls: formControls
     })
   }
 
@@ -60,6 +63,33 @@ export default class Layout extends Component {
     })
   }
 
+  listAllHandler = () => {
+    let { formControls } = this.state
+    formControls.viewTask = []
+    formControls.viewTask.push(true, false)
+    this.setState({
+      formControls
+    })
+  }
+
+  listActiveHandler = () => {
+    let { formControls } = this.state
+    formControls.viewTask = []
+    formControls.viewTask.push(false)
+    this.setState({
+      formControls
+    })
+  }
+
+  listFinishedHandler = () => {
+    let { formControls } = this.state
+    formControls.viewTask = []
+    formControls.viewTask.push(true)
+    this.setState({
+      formControls
+    })
+  }
+
   render() {
     return (
       <div className={classes.Layout}>
@@ -73,12 +103,12 @@ export default class Layout extends Component {
           />
           <button 
           onClick={this.createTaskHandler}
-          onKeyPress ={this.olo}
           >
             озадачить</button>
         </div>        
-        <div className={classes.LayoutWrapper}>
+        <div className={classes.LayoutTasks}>
          { this.state.tasks.map((task, i) => {
+           if (this.state.formControls.viewTask.includes(task.done)) {
            return (
              <Task 
               key={i}
@@ -87,9 +117,15 @@ export default class Layout extends Component {
               onCheckboxClick = {(evt) => {this.checkboxHandler(evt.target.checked, i)}}
               onDeleteClick = {() => {this.deleteHandler(i)}}
              />
-           )
+           )}
+           return null
          })}
         </div>
+        <SortList 
+        onAllClick = {this.listAllHandler}
+        onActiveClick = {this.listActiveHandler}
+        onFinishedClick = {this.listFinishedHandler}
+        />
       </div>
     )
   }
